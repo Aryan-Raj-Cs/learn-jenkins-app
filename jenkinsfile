@@ -90,12 +90,12 @@ pipeline {
                 sh '''
                     echo 'Deploying to production'
 
-                    npm install netlify-cli
-                    node_modules/.bin/netlify --version
+                    npx netlify-cli
+                    npx netlify-cli --version
                     echo "deploying to production. SITE_ID = NETLIFY_SITE_ID"
                     echo "netlify status"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod
+                    npx netlify-cli status
+                    npx netlify-cli  deploy --dir=build --prod
 
 
                 '''
