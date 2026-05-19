@@ -78,7 +78,8 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+
+        stage('Deploy prod') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -93,6 +94,7 @@ pipeline {
                     echo "deploying to production. SITE_ID = NETLIFY_SITE_ID"
                     echo "netlify status"
                     node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
 
 
                 '''
