@@ -68,3 +68,19 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+docker running for project 
+
+docker build -f project-dockerfile -t learn-jenkins-app .
+docker run -p 3000:3000 learn-jenkins-app
+
+Then open http://localhost:3000
+
+Details:
+
+Base image: node:18-alpine (same as your Jenkins build stage)
+CMD: npm run start
+HOST=0.0.0.0 so the React dev server is reachable from outside the container
+Port 3000 exposed
+The existing root Dockerfile is unchanged and still used by Jenkins for the Playwright image.
