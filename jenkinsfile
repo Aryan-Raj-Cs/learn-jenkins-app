@@ -33,6 +33,7 @@ pipeline {
                     sh '''
                         aws --version
                         aws ecs register-task-definition --cli-input-json file://aws/task-defination-prod.json
+                        aws ecs update-service --cluster definitive-hippopotamus-nlbn0c --service learn-jeinkns-taskdefination-prod-service-sxewmzn3 --task-definition learn-jeinkns-taskdefination-prod:2
                         
                     '''
                 }
