@@ -7,3 +7,7 @@ RUN yum install -y jq tar gzip \
     && curl -fsSL "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" \
     | tar xz --strip-components=1 -C /usr/local/bin docker/docker \
     && docker --version
+
+# Jenkins docker agent must run shell commands, not "aws" as entrypoint
+ENTRYPOINT []
+CMD ["bash"]
