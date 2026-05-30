@@ -10,11 +10,16 @@ pipeline {
         AWS_ECS_CLUSTER = 'definitive-hippopotamus-nlbn0c'
         AWS_ECS_SERVICE_PROD = 'learn-jeinkns-taskdefination-prod-service-sxewmzn3'
         AWS_ECS_TD_PROD = 'learn-jeinkns-taskdefination-prod'
+        AWS_DOCKER_REGISTRY = '825555019640.dkr.ecr.us-east-1.amazonaws.com'
     }
 
     stages {
 
-    
+        stage('Docker') {
+                steps {
+                    sh 'docker build -f ci/dockerfile-aws-cli -t docker-aws-cli .'
+                }
+        }
         stage('Build') {
             agent {
                 docker {
@@ -38,7 +43,7 @@ pipeline {
         stage('Build Docker image') {
             agent {
                 docker {
-                    image 'docker:24-cli'
+                    image 'docker-aws-cli'
                     reuseNode true
                     args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
                 }
@@ -46,7 +51,9 @@ pipeline {
             steps {
                 sh '''
                     docker version
-                    docker build -f Dockerfile -t $APP_NAME:$REACT_APP_VERSION .
+                    docker build -f Dockerfile -t $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION .
+                    aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
+                    docker push  $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION
                 '''
             }
         }
